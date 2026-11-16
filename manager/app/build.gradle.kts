@@ -25,8 +25,8 @@ val managerVersionCode = rootProject.extra["managerVersionCode"] as Int
 val managerVersionName = rootProject.extra["managerVersionName"] as String
 
 val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
-val defaultManagerPackageName = if (isPrBuild) "com.sukisu.ultra.pr" else "com.sukisu.ultra"
-val defaultManagerName = if (isPrBuild) "SukiSU PR" else "SukiSU"
+val defaultManagerPackageName = if (isPrBuild) "com.sukisu.nova.pr" else "com.sukisu.nova"
+val defaultManagerName = if (isPrBuild) "SukiSU PR" else "SukiSU Nova"
 val managerPackageName = project.findProperty("KSU_PACKAGE_NAME")?.toString() ?: defaultManagerPackageName
 val managerName = project.findProperty("KSU_NAME")?.toString() ?: defaultManagerName
 
@@ -63,7 +63,7 @@ val baseCFlags = listOf(
 val baseCppFlags = baseCFlags + "-fno-rtti"
 
 android {
-    namespace = "com.sukisu.ultra"
+    namespace = "com.sukisu.nova"
 
     buildTypes {
         debug {
@@ -174,6 +174,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = androidSourceCompatibility
         targetCompatibility = androidTargetCompatibility
     }
@@ -199,6 +200,10 @@ base {
 }
 
 dependencies {
+    // java.time and java.nio.file are used throughout the manager but only exist
+    // from Android 8.0; desugaring keeps them available on Android 7.
+    coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
+
     // Stable bridge shared with the optional assistant AAR.
     implementation(project(":ai-api"))
     implementation(libs.androidx.exifinterface)

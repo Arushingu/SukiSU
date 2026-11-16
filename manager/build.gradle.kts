@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
 }
 
-extra["androidMinSdkVersion"] = 26
+extra["androidMinSdkVersion"] = 24
 extra["androidTargetSdkVersion"] = 37
 extra["androidCompileSdkVersion"] = 37
 extra["androidCompileSdkVersionMinor"] = 0
@@ -28,8 +28,8 @@ fun getGitDescribe(): String {
 
 fun getVersionCode(): Int {
     val commitCount = getGitCommitCount()
-    val major = 4
-    val end = 2815
+    val major = 3
+    val end = 4001
     return major * 10000 + commitCount - end
 }
 
